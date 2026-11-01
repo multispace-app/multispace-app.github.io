@@ -1,0 +1,13 @@
+[
+  {"id": "mlbb",      "name": "Mobile Legends", "icon": {"img": "/assets/img/ic/mlbb.webp"}, "phone": true,  "tested": true,
+   "tested_on": "Pixel 10 · Android 17",
+   "note_es": "Se abre y se juega en clones; probado por el autor. Cuentas separadas por clon.",
+   "note_en": "Opens and plays inside clones; tested by the author. Separate accounts per clone."},
+  {"id": "whatsapp",  "name": "WhatsApp",       "icon": {"cls": "wa"}, "phone": true,  "tested": false},
+  {"id": "facebook",  "name": "Facebook",       "icon": {"cls": "fb"}, "phone": true,  "tested": false},
+  {"id": "instagram", "name": "Instagram",      "icon": {"cls": "ig"}, "phone": false, "tested": false},
+  {"id": "youtube",   "name": "YouTube",        "icon": {"cls": "yt"}, "phone": false, "tested": false},
+  {"id": "tiktok",    "name": "TikTok",         "icon": {"cls": "tk"}, "phone": true,  "tested": false},
+  {"id": "coc",       "name": "Clash of Clans", "icon": {"img": "/assets/img/ic/coc.webp"},  "phone": true,  "tested": false},
+  {"id": "x",         "name": "X",              "icon": {"cls": "xx"}, "phone": false, "tested": false}
+]
