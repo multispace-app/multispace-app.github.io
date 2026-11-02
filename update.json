@@ -1,0 +1,10 @@
+{
+  "version_code": 4,
+  "version_name": "0.4.0",
+  "apk_url": "https://github.com/multispace-app/multispace-app.github.io/releases/download/v0.4.0/MultiSpace.apk",
+  "sha256": "bed874c9784a33384a8998668f255480b22364854735bb487593084eeb33d922",
+  "size": 24557473,
+  "notes_es": "Primera versión pública. Clona tus apps y juegos de Android, cada uno con su propia cuenta. Comparte el contenido pesado entre clones del mismo juego para no descargarlo dos veces. Identificador de dispositivo propio por clon, opcional. Aviso dentro de la app cuando haya una versión nueva.",
+  "notes_en": "First public release. Clone your Android apps and games, each with its own account. Share heavy content between clones of the same game so you don't download it twice. Optional per-clone device identifier. In-app notice when a new version is out.",
+  "min_sdk": 33
+}
