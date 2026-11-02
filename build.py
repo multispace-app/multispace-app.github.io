@@ -1,13 +1,19 @@
 #!/usr/bin/env python3
 """Genera el sitio estático de MultiSpace (ES/EN). Uso: python build.py
 Fuentes de datos: site.config.json, data/release.json, data/apps.json. Salida: es/, en/, index.html, 404.html, sitemap.xml, robots.txt."""
-import html, json, pathlib, shutil
+import hashlib, html, json, pathlib, shutil
 
 ROOT = pathlib.Path(__file__).parent
 CFG = json.loads((ROOT / "site.config.json").read_text("utf8"))
 REL = json.loads((ROOT / "data/release.json").read_text("utf8"))
 APPS = json.loads((ROOT / "data/apps.json").read_text("utf8"))
 URL = CFG["site_url"].rstrip("/")
+
+def ver(rel_path):
+    """?v=<huella> a partir del contenido real del archivo: cambia solo cuando el archivo cambia, así el navegador nunca sirve una copia vieja
+    en caché tras publicar una actualización (CSS/JS se guardan 10 min según la cabecera Cache-Control de GitHub Pages)."""
+    h = hashlib.sha1((ROOT / rel_path).read_bytes()).hexdigest()[:8]
+    return f"/{rel_path}?v={h}"
 CONTACT = CFG.get("owner_contact", "").strip()
 e = html.escape
 BY_ID = {a["id"]: a for a in APPS}
@@ -354,12 +360,12 @@ def document(l, page):
 <meta name="theme-color" content="#08080a"><link rel="icon" type="image/png" sizes="32x32" href="/assets/img/icon-32.png"><link rel="apple-touch-icon" href="/assets/img/icon-180.png">
 <meta property="og:type" content="website"><meta property="og:site_name" content="MultiSpace"><meta property="og:title" content="{e(title)}"><meta property="og:description" content="{e(desc)}"><meta property="og:url" content="{canon}"><meta property="og:locale" content="{t["locale"]}"><meta property="og:image" content="{URL}/assets/img/og-image.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
 <link rel="preload" href="/assets/fonts/rajdhani-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/assets/fonts/barlow-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/css/site.css"><link rel="stylesheet" href="/assets/css/pages.css">{gc}</head>
+<link rel="stylesheet" href="{ver('assets/css/site.css')}"><link rel="stylesheet" href="{ver('assets/css/pages.css')}">{gc}</head>
 <body><a class="skip" href="#main">{t["skip"]}</a>
 {hero(l, page)}
 <main id="main" tabindex="-1">{main}</main>
 {footer(l)}
-<script src="/assets/js/site.js" defer></script></body></html>
+<script src="{ver('assets/js/site.js')}" defer></script></body></html>
 '''
 
 def write(rel, text):
@@ -379,8 +385,8 @@ write("index.html", f'''<!doctype html><html lang="es"><head><meta charset="utf-
 <script>var l=(navigator.language||"es").slice(0,2)==="en"?"en":"es";location.replace("/"+l+"/");</script></head>
 <body><p><a href="/es/">Español</a> · <a href="/en/">English</a></p></body></html>
 ''')
-write("404.html", '''<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>404 · MultiSpace</title><meta name="robots" content="noindex">
-<link rel="stylesheet" href="/assets/css/site.css"></head><body><main class="pg" id="main"><h1>404</h1><p>Esta página no existe. / This page does not exist.</p><p><a class="tl" href="/es/">Inicio</a> · <a class="tl" href="/en/">Home</a></p></main></body></html>
+write("404.html", f'''<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>404 · MultiSpace</title><meta name="robots" content="noindex">
+<link rel="stylesheet" href="{ver('assets/css/site.css')}"></head><body><main class="pg" id="main"><h1>404</h1><p>Esta página no existe. / This page does not exist.</p><p><a class="tl" href="/es/">Inicio</a> · <a class="tl" href="/en/">Home</a></p></main></body></html>
 ''')
 write("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + "".join(f"<url><loc>{u}</loc></url>\n" for u in urls) + "</urlset>\n")
 write("robots.txt", f"User-agent: *\nAllow: /\nSitemap: {URL}/sitemap.xml\n")
