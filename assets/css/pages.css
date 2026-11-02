@@ -57,6 +57,11 @@ a.tl{color:#ff6670;text-decoration:underline;text-underline-offset:.2em}
 .gc{display:flex;gap:1rem;align-items:center;border:1px solid rgba(255,90,100,.35);border-radius:18px;padding:1rem 1.2rem;background:linear-gradient(90deg,rgba(8,8,10,.9),rgba(40,6,12,.7))}
 .gc .t{width:64px;height:64px}.gc p{margin:.2rem 0 0}.gc .gt{color:#ff8a92;font:600 14px Rajdhani;letter-spacing:.06em;text-transform:uppercase;margin:0}
 .pg .btn{font-size:22px}
+.techdl{margin:-.4rem 0 1.8rem;border:1px solid rgba(255,90,100,.3);border-radius:16px;padding:.2rem 1.2rem}
+.techdl summary{cursor:pointer;padding:.9rem 0;font:600 16px Rajdhani;color:#ff8a92}
+.techdl[open] summary{border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:.9rem}
+.techdl .meta{margin:0 0 .9rem;border:0;padding:0;background:none}
+.techdl p{margin:0 0 1rem;font-size:14.5px;color:#9a8f93}
 .installs{display:grid;gap:.9rem;margin:1.2rem 0 1.8rem}
 .istep{border:1px solid rgba(255,90,100,.3);border-radius:16px;padding:1rem 1.2rem;background:linear-gradient(90deg,rgba(8,8,10,.9),rgba(40,6,12,.55))}
 .istep h3{margin:0 0 .3rem}

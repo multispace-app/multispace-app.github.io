@@ -266,16 +266,19 @@ def body_download(l):
     es = l == "es"; pub = REL["published"] and REL["url"]
     pend = "Pendiente de publicar" if es else "To be published"
     row = lambda k, v: f'<dt>{k}</dt><dd>{e(v) if v else pend}</dd>'
-    meta = "".join([row("Precio" if es else "Price", "Gratis" if es else "Free"), row("Versión" if es else "Version", REL["version"]), row("Fecha" if es else "Date", REL["date"]),
+    meta = "".join([row("Versión" if es else "Version", REL["version"]), row("Fecha" if es else "Date", REL["date"]),
                     row("Tamaño" if es else "Size", (REL["size_mb"] + " MB") if REL["size_mb"] else ""),
-                    row("Android", ("Android " + REL["min_android"] + ("+" if REL["min_android"] else ""))), row("Arquitectura" if es else "Architecture", REL["arch"]),
+                    row("Android", ("Android " + REL["min_android"] + ("+" if REL["min_android"] else "")))])
+    tech = "".join([row("Arquitectura" if es else "Architecture", REL["arch"]),
                     row("SHA-256 del APK" if es else "APK SHA-256", REL["sha256"]), row("Huella del certificado" if es else "Certificate fingerprint", REL["cert_sha256"])])
+    tech_block = (f'<details class="techdl"><summary>{"Detalles técnicos y verificación" if es else "Technical details and verification"}</summary>'
+                  f'<dl class="meta">{tech}</dl>'
+                  f'<p>{"Compara la huella SHA-256 con la del archivo que descargaste antes de instalarlo. Si no coinciden, no lo instales." if es else "Compare the SHA-256 fingerprint with the one of the file you downloaded before installing. If they do not match, do not install it."}</p></details>')
     if es:
         note = "" if pub else '<p class="notice"><strong>Todavía no hay un APK publicado.</strong> Cuando exista, aquí aparecerá el botón de descarga con su tamaño y sus huellas de verificación reales.</p>'
         btn = pill_btn(f'Descargar APK · v{e(REL["version"])}', REL["url"]) if pub else pill_btn("APK disponible muy pronto", disabled=True)
         return (f'<h1>Descargar MultiSpace</h1><p>MultiSpace es totalmente gratis. No está en Google Play: se descarga como APK directamente desde esta página. Android te pedirá permitir la instalación desde el navegador o el gestor de archivos que uses.</p>'
-                f'{note}<p>{btn}</p><dl class="meta">{meta}</dl><h2>Cómo instalarlo</h2><ol><li>Descarga el APK desde esta página.</li><li>Ábrelo y, si Android lo pide, permite instalar apps desde esa fuente.</li><li>Abre MultiSpace y crea tu primer clon.</li></ol>'
-                f'<h2>Comprueba la descarga</h2><p>Compara la huella SHA-256 de arriba con la del archivo que descargaste antes de instalarlo. Si no coinciden, no lo instales.</p>'
+                f'{note}<p>{btn}</p><dl class="meta">{meta}</dl>{tech_block}<h2>Cómo instalarlo</h2><ol><li>Descarga el APK desde esta página.</li><li>Ábrelo y, si Android lo pide, permite instalar apps desde esa fuente.</li><li>Abre MultiSpace y crea tu primer clon.</li></ol>'
                 f'<h2>Qué puede aparecer al instalarlo</h2><p>Como MultiSpace no está en Google Play, Android añade avisos que no salen con las apps de la tienda. No significa que la app tenga nada malo: es la seguridad normal de Android y de Google Play Protect para cualquier APK que no venga de la tienda.</p>'
                 '<div class="installs">'
                 '<div class="istep"><h3>«Permitir instalar desde esta fuente»</h3><p>La primera vez, tu navegador o gestor de archivos te pedirá este permiso antes de instalar. Actívalo solo para esa app y continúa.</p></div>'
@@ -286,8 +289,7 @@ def body_download(l):
     note = "" if pub else '<p class="notice"><strong>No APK has been published yet.</strong> Once it exists, the download button will appear here with its real size and verification fingerprints.</p>'
     btn = pill_btn(f'Download APK · v{e(REL["version"])}', REL["url"]) if pub else pill_btn("APK coming soon", disabled=True)
     return (f'<h1>Download MultiSpace</h1><p>MultiSpace is completely free. It is not on Google Play: you download it as an APK straight from this page. Android will ask you to allow installs from the browser or file manager you use.</p>'
-            f'{note}<p>{btn}</p><dl class="meta">{meta}</dl><h2>How to install</h2><ol><li>Download the APK from this page.</li><li>Open it and, if Android asks, allow installing apps from that source.</li><li>Open MultiSpace and create your first clone.</li></ol>'
-            f'<h2>Check the download</h2><p>Compare the SHA-256 above with the one of the file you downloaded before installing. If they do not match, do not install it.</p>'
+            f'{note}<p>{btn}</p><dl class="meta">{meta}</dl>{tech_block}<h2>How to install</h2><ol><li>Download the APK from this page.</li><li>Open it and, if Android asks, allow installing apps from that source.</li><li>Open MultiSpace and create your first clone.</li></ol>'
             f'<h2>What might appear during install</h2><p>Because MultiSpace is not on Google Play, Android adds warnings that do not show up with Play Store apps. That does not mean anything is wrong with the app: it is the normal security check Android and Google Play Protect run on any APK that is not from the store.</p>'
             '<div class="installs">'
             '<div class="istep"><h3>"Allow installs from this source"</h3><p>The first time, your browser or file manager will ask for this permission before installing. Turn it on just for that app and continue.</p></div>'
