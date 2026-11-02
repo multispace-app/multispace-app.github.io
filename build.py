@@ -15,6 +15,7 @@ def ver(rel_path):
     h = hashlib.sha1((ROOT / rel_path).read_bytes()).hexdigest()[:8]
     return f"/{rel_path}?v={h}"
 CONTACT = CFG.get("owner_contact", "").strip()
+GSV = (f'<meta name="google-site-verification" content="{html.escape(CFG["google_site_verification"])}">' if CFG.get("google_site_verification") else "")
 e = html.escape
 BY_ID = {a["id"]: a for a in APPS}
 PHONE_IDS = ["facebook", "tiktok", "coc", "mlbb", "whatsapp"]
@@ -391,7 +392,7 @@ def document(l, page):
 <html lang="{l}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{e(title)}</title><meta name="description" content="{e(desc)}">
 <link rel="canonical" href="{canon}"><link rel="alternate" hreflang="{l}" href="{canon}"><link rel="alternate" hreflang="{t["other"]}" href="{alt}"><link rel="alternate" hreflang="x-default" href="{URL}/">
-<meta name="theme-color" content="#08080a"><link rel="icon" type="image/png" sizes="32x32" href="/assets/img/icon-32.png"><link rel="apple-touch-icon" href="/assets/img/icon-180.png">
+<meta name="theme-color" content="#08080a"><link rel="icon" type="image/png" sizes="32x32" href="/assets/img/icon-32.png"><link rel="apple-touch-icon" href="/assets/img/icon-180.png">{GSV}
 <meta property="og:type" content="website"><meta property="og:site_name" content="MultiSpace"><meta property="og:title" content="{e(title)}"><meta property="og:description" content="{e(desc)}"><meta property="og:url" content="{canon}"><meta property="og:locale" content="{t["locale"]}"><meta property="og:image" content="{URL}/assets/img/og-image.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
 <link rel="preload" href="/assets/fonts/rajdhani-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/assets/fonts/barlow-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{ver('assets/css/site.css')}"><link rel="stylesheet" href="{ver('assets/css/pages.css')}">{gc}{ld}</head>
@@ -415,7 +416,7 @@ for l in ("es", "en"):
 
 write("index.html", f'''<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>MultiSpace</title>
 <link rel="canonical" href="{URL}/es/"><link rel="alternate" hreflang="es" href="{URL}/es/"><link rel="alternate" hreflang="en" href="{URL}/en/"><link rel="alternate" hreflang="x-default" href="{URL}/">
-<meta name="robots" content="noindex,follow"><meta name="theme-color" content="#08080a"><style>body{{background:#08080a;color:#f4f1f2;font:18px system-ui;padding:2rem}}a{{color:#ff6670}}</style>
+<meta name="robots" content="noindex,follow"><meta name="theme-color" content="#08080a">{GSV}<style>body{{background:#08080a;color:#f4f1f2;font:18px system-ui;padding:2rem}}a{{color:#ff6670}}</style>
 <script>var l=(navigator.language||"es").slice(0,2)==="en"?"en":"es";location.replace("/"+l+"/");</script></head>
 <body><p><a href="/es/">Español</a> · <a href="/en/">English</a></p></body></html>
 ''')
