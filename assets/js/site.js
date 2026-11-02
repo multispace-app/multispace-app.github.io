@@ -19,5 +19,8 @@
   function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
   addEventListener('scroll', onScroll, { passive: true });
   addEventListener('resize', onScroll);
+  // Al hacer clic, la píldora se mueve al instante: no espera a que termine el scroll (que puede tardar si la sección está lejos). Si luego
+  // se sigue desplazando con el ratón, onScroll retoma el control con la sección que corresponda.
+  secs.forEach(function (s) { s.link.addEventListener('click', function () { secs.forEach(function (o) { o.link.classList.toggle('on', o === s); }); }); });
   update();
 })();
