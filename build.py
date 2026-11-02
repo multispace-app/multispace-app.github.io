@@ -345,14 +345,46 @@ def body_privacy(l):
 
 BODIES = {"download": body_download, "games": body_games, "report": body_report, "privacy": body_privacy}
 
+# ---------------------------------------------------------------- datos estructurados (JSON-LD): solo campos reales, nunca inventados
+def ld_website(l):
+    return {"@context": "https://schema.org", "@type": "WebSite", "name": "MultiSpace", "url": path_abs(l, "home"), "inLanguage": l}
+
+def ld_faq(l):
+    t = S[l]
+    return {"@context": "https://schema.org", "@type": "FAQPage",
+            "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in t["faq"]]}
+
+def ld_software(l):
+    es = l == "es"
+    d = {"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "MultiSpace",
+         "applicationCategory": "UtilitiesApplication", "operatingSystem": "Android",
+         "description": S[l]["meta"]["download"][1], "url": path_abs(l, "download")}
+    if REL["published"] and REL["url"]:
+        d["softwareVersion"] = REL["version"]
+        d["fileSize"] = f'{REL["size_mb"]}MB'
+        d["downloadUrl"] = REL["url"]
+        d["offers"] = {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+    return d
+
+def jsonld(*objs):
+    return "".join(f'<script type="application/ld+json">{json.dumps(o, ensure_ascii=False)}</script>' for o in objs)
+
+def path_abs(l, page):
+    return URL + path(l, page)
+
 # ---------------------------------------------------------------- documento
 def document(l, page):
     t = S[l]; title, desc = t["meta"][page]
     canon = URL + path(l, page); alt = URL + path(t["other"], page)
     if page == "home":
         main = section_apps(l) + section_steps(l) + section_real(l) + section_keys(l) + section_faq(l)
+        ld = jsonld(ld_website(l), ld_faq(l))
+    elif page == "download":
+        main = f'<div class="pg">{BODIES[page](l)}</div>'
+        ld = jsonld(ld_software(l))
     else:
         main = f'<div class="pg">{BODIES[page](l)}</div>'
+        ld = jsonld(ld_website(l))
     gc = (f'<script data-goatcounter="https://{e(CFG["goatcounter_code"])}.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>'
           if CFG.get("goatcounter_code") else "")
     return f'''<!doctype html>
@@ -362,7 +394,7 @@ def document(l, page):
 <meta name="theme-color" content="#08080a"><link rel="icon" type="image/png" sizes="32x32" href="/assets/img/icon-32.png"><link rel="apple-touch-icon" href="/assets/img/icon-180.png">
 <meta property="og:type" content="website"><meta property="og:site_name" content="MultiSpace"><meta property="og:title" content="{e(title)}"><meta property="og:description" content="{e(desc)}"><meta property="og:url" content="{canon}"><meta property="og:locale" content="{t["locale"]}"><meta property="og:image" content="{URL}/assets/img/og-image.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
 <link rel="preload" href="/assets/fonts/rajdhani-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/assets/fonts/barlow-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="{ver('assets/css/site.css')}"><link rel="stylesheet" href="{ver('assets/css/pages.css')}">{gc}</head>
+<link rel="stylesheet" href="{ver('assets/css/site.css')}"><link rel="stylesheet" href="{ver('assets/css/pages.css')}">{gc}{ld}</head>
 <body><a class="skip" href="#main">{t["skip"]}</a>
 {hero(l, page)}
 <main id="main" tabindex="-1">{main}</main>
