@@ -1,9 +1,9 @@
 {
   "published": true,
-  "version": "0.4.1",
-  "date": "2026-11-01",
+  "version": "0.4.2",
+  "date": "2026-11-03",
   "size_mb": "23.4",
-  "sha256": "357598a5cc5f2b42238bde4deea1e82ddf0b931bf257441411581cc3722946dc",
+  "sha256": "3909d228f1d6269f25cfff6ed012118cf662d1c7748b55bceaa539702954765f",
   "cert_sha256": "9442fa51b9af1c8897cb67c2da65f7ea33fa2b29a2788e751a617fdfefb02937",
   "url": "https://github.com/multispace-app/multispace-app.github.io/releases/latest/download/MultiSpace.apk",
   "min_android": "13",

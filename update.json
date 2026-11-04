@@ -1,10 +1,10 @@
 {
-  "version_code": 5,
-  "version_name": "0.4.1",
-  "apk_url": "https://github.com/multispace-app/multispace-app.github.io/releases/download/v0.4.1/MultiSpace.apk",
-  "sha256": "357598a5cc5f2b42238bde4deea1e82ddf0b931bf257441411581cc3722946dc",
+  "version_code": 6,
+  "version_name": "0.4.2",
+  "apk_url": "https://github.com/multispace-app/multispace-app.github.io/releases/download/v0.4.2/MultiSpace.apk",
+  "sha256": "3909d228f1d6269f25cfff6ed012118cf662d1c7748b55bceaa539702954765f",
   "size": 24557469,
-  "notes_es": "Corrección: dentro de un clon, al girar el teléfono entre las dos orientaciones horizontales, la pantalla ya no se queda congelada.",
-  "notes_en": "Fix: inside a clone, rotating the phone between the two landscape orientations no longer freezes the screen.",
+  "notes_es": "Corrección importante: la instalación de actualizaciones ya no se queda cargando sin terminar.",
+  "notes_en": "Important fix: installing updates no longer gets stuck loading forever.",
   "min_sdk": 33
 }
